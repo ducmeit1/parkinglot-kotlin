@@ -4,12 +4,13 @@ import co.practices.parkinglot.constant.CommandConstants
 import co.practices.parkinglot.constant.MessageConstants
 import co.practices.parkinglot.internal.exception.InputException
 import co.practices.parkinglot.internal.ultility.CommandLineHelper
+import co.practices.parkinglot.service.IParkingService
 import co.practices.parkinglot.service.manager.ParkingService
 import java.util.*
 
 object ParkingLotApplication {
     private val scanner = Scanner(System.`in`)
-    private lateinit var parkingService: ParkingService
+    private lateinit var parkingService: IParkingService
 
     fun bootstrap() {
         with(scanner) {
@@ -32,23 +33,23 @@ object ParkingLotApplication {
                         else ->
                             if (ParkingLotApplication::parkingService.isInitialized) with(parkingService) {
                                 when (command) {
-                                    co.practices.parkinglot.constant.CommandConstants.PARK.command -> park(
-                                        co.practices.parkinglot.internal.ultility.CommandLineHelper.getString(
-                                            co.practices.parkinglot.ParkingLotApplication.scanner,
+                                    CommandConstants.PARK.command -> park(
+                                        CommandLineHelper.getString(
+                                            scanner,
                                             "car-number"
                                         )
                                     )
 
-                                    co.practices.parkinglot.constant.CommandConstants.LEAVE.command -> leave(
-                                        co.practices.parkinglot.internal.ultility.CommandLineHelper.getString(
-                                            co.practices.parkinglot.ParkingLotApplication.scanner,
+                                    CommandConstants.LEAVE.command -> leave(
+                                        CommandLineHelper.getString(
+                                            scanner,
                                             "car-number"
-                                        ), co.practices.parkinglot.internal.ultility.CommandLineHelper.getInteger(co.practices.parkinglot.ParkingLotApplication.scanner, "hours", 1)
+                                        ), CommandLineHelper.getInteger(scanner, "hours", 1)
                                     )
 
-                                    co.practices.parkinglot.constant.CommandConstants.STATUS.command -> status()
+                                    CommandConstants.STATUS.command -> status()
                                     else -> {
-                                        throw InputException(co.practices.parkinglot.constant.MessageConstants.EXCEPTION_ENTER_INVALID_COMMAND.message)
+                                        throw InputException(MessageConstants.EXCEPTION_ENTER_INVALID_COMMAND.message)
                                     }
                                 }
                             }
