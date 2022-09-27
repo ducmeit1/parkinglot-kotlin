@@ -7,7 +7,6 @@ import co.practices.parkinglot.internal.exception.ParkingException
 import co.practices.parkinglot.repository.IParkingRepository
 import co.practices.parkinglot.repository.manager.ParkingRepository
 import co.practices.parkinglot.service.IParkingService
-import java.util.*
 
 object ParkingService : IParkingService {
     private lateinit var parkingRepository: IParkingRepository
@@ -40,7 +39,12 @@ object ParkingService : IParkingService {
             this.hasInitializedParkingLots()
             val freeLot = this.parkingRepository.remove(registrationNumber)
             val parkingCost = this.calculateParkingCost(parkingDuration)
-            return String.format(MessageConstants.SUCCESSFUL_LEAVE_PARKING_LOT.message, registrationNumber, freeLot, parkingCost)
+            return String.format(
+                MessageConstants.SUCCESSFUL_LEAVE_PARKING_LOT.message,
+                registrationNumber,
+                freeLot,
+                parkingCost
+            )
         } catch (e: ParkingException) {
             throw e
         }
@@ -48,7 +52,8 @@ object ParkingService : IParkingService {
 
     override fun status(): String {
         val stringBuilder = mutableListOf<String>()
-        this.parkingRepository.getAll().forEach{with(it) {stringBuilder.add("${it.first}\t\t\t${it.second.registrationNumber}")} }
+        this.parkingRepository.getAll()
+            .forEach { with(it) { stringBuilder.add("${it.first}\t\t\t${it.second.registrationNumber}") } }
         return "Slot No.\tRegistration No.\n" + stringBuilder.joinToString("\n")
     }
 
@@ -62,6 +67,6 @@ object ParkingService : IParkingService {
         if (parkingDuration <= FareConstants.BASE_FARE_DURATION) {
             return FareConstants.BASE_FARE_PRICE
         }
-         return FareConstants.BASE_FARE_PRICE + ((parkingDuration - FareConstants.BASE_FARE_DURATION) * FareConstants.EXTRA_HOURLY_FARE_RATE_PRICE)
+        return FareConstants.BASE_FARE_PRICE + ((parkingDuration - FareConstants.BASE_FARE_DURATION) * FareConstants.EXTRA_HOURLY_FARE_RATE_PRICE)
     }
 }

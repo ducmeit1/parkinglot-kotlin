@@ -18,7 +18,7 @@ object ParkingLotApplication {
             CommandLineHelper.showInstructions()
             while (true) {
                 try {
-                    when (val command = next()) {
+                    when (next()) {
                         CommandConstants.EXIT.command -> return
 
                         CommandConstants.HELP.command -> CommandLineHelper.showAvailableCommands()

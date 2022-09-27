@@ -19,7 +19,12 @@ class ParkingRepository(private val parkingLotsCapacity: Int) : IParkingReposito
         }
 
         if (lookup(car.registrationNumber) != null) {
-            throw ParkingException(String.format(MessageConstants.EXCEPTION_ALREADY_PARKED.message, car.registrationNumber))
+            throw ParkingException(
+                String.format(
+                    MessageConstants.EXCEPTION_ALREADY_PARKED.message,
+                    car.registrationNumber
+                )
+            )
         }
 
         val freeLot = (1..parkingLotsCapacity).firstOrNull { it !in parkingLotsMap } ?: 1
