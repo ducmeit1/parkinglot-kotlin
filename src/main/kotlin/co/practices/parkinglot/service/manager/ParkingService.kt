@@ -8,7 +8,7 @@ import co.practices.parkinglot.repository.IParkingRepository
 import co.practices.parkinglot.repository.manager.ParkingRepository
 import co.practices.parkinglot.service.IParkingService
 
-object ParkingService : IParkingService {
+class ParkingService : IParkingService {
     private lateinit var parkingRepository: IParkingRepository
 
     @Throws(ParkingException::class)

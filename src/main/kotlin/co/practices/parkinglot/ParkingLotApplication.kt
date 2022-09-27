@@ -8,14 +8,15 @@ import co.practices.parkinglot.service.IParkingService
 import co.practices.parkinglot.service.manager.ParkingService
 import java.util.*
 
-object ParkingLotApplication {
-    private val scanner = Scanner(System.`in`)
-    private val parkingService: IParkingService = ParkingService
+class ParkingLotApplication(private val scanner: Scanner, private val test: Boolean) {
+    private val parkingService: IParkingService = ParkingService()
 
     fun bootstrap() {
         with(scanner) {
-            CommandLineHelper.showAvailableCommands()
-            CommandLineHelper.showInstructions()
+            if (!test) {
+                CommandLineHelper.showAvailableCommands()
+                CommandLineHelper.showInstructions()
+            }
             while (true) {
                 try {
                     when (next()) {
@@ -54,5 +55,6 @@ object ParkingLotApplication {
 }
 
 fun main() {
-    ParkingLotApplication.bootstrap()
+    val scanner = Scanner(System.`in`)
+    ParkingLotApplication(scanner, false).bootstrap()
 }

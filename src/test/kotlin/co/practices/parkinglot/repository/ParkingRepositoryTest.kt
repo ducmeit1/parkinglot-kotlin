@@ -6,7 +6,6 @@ import co.practices.parkinglot.internal.exception.ParkingException
 import co.practices.parkinglot.repository.manager.ParkingRepository
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.datatest.WithDataTestName
 import io.kotest.datatest.withData
 import io.kotest.matchers.comparables.shouldBeEqualComparingTo
 
@@ -17,15 +16,12 @@ data class ParkingRepositoryTestCase(
     val want: List<Int>?,
     val throwException: Boolean,
     val exception: ParkingException?
-) : WithDataTestName {
-    override fun dataTestName(): String {
-        return name
-    }
-}
+) {}
 
 class ParkingRepositoryTest : FunSpec({
     context("Test add car to parking") {
         withData(
+            nameFn = { it.name },
             ParkingRepositoryTestCase(
                 name = "Add to parking successful",
                 parkingLotCapacity = 2,
@@ -49,7 +45,7 @@ class ParkingRepositoryTest : FunSpec({
                 want = null,
                 throwException = true,
                 exception = ParkingException(String.format(MessageConstants.EXCEPTION_ALREADY_PARKED.message, "11"))
-            )
+            ),
         ) { (name, parkingLotCapacity, input, want, throwException, exception) ->
             val parkingRepository: IParkingRepository = ParkingRepository(parkingLotCapacity)
             if (throwException) {
@@ -70,6 +66,7 @@ class ParkingRepositoryTest : FunSpec({
 
     context("Test remove car from parking") {
         withData(
+            nameFn = { it.name },
             ParkingRepositoryTestCase(
                 name = "Remove car from parking successful",
                 parkingLotCapacity = 2,
